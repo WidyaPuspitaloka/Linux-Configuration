@@ -2,6 +2,9 @@
 
 Baseline installation of a Linux distribution on a virtual machine and prepare it to host your web applications, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database server
 
+Public IP: 18.194.164.182
+Private IP: 172.26.2.226 
+
 ### Configuration Steps
 
 #### Create an instance with Amazon Lightsail
