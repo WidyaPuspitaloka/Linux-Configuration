@@ -46,7 +46,7 @@ After log in to the server from the terminal in your computer,
 9. Run sudo ufw deny 22 to deny port 22 (deny this port since it is not being used for anything; it is the default port for SSH, but this virtual machine has now been configured so that SSH uses port 2200)
 10. Run sudo ufw enable to enable the ufw firewall
 11. Run sudo ufw status to check which ports are open and to see if the ufw is active; if done correctly, it should look like this:
-
+```
 To                         Action      From
 --                         ------      ----
 22                         DENY        Anywhere
@@ -57,6 +57,7 @@ To                         Action      From
 2200/tcp (v6)              ALLOW       Anywhere (v6)
 80/tcp (v6)                ALLOW       Anywhere (v6)
 123/udp (v6)               ALLOW       Anywhere (v6)
+```
 
 12. Update the external (Amazon Lightsail) firewall on the browser by clicking on the 'Manage' option, then the 'Networking' tab, and then changing the firewall configuration to match the internal firewall settings above (only ports 80(TCP), 123(UDP), and 2200(TCP) should be allowed; make sure to deny the default port 22)
 
@@ -78,7 +79,7 @@ grader ALL=(ALL:ALL) ALL
 
 4. Save and close the visudo file
 5. To verify that grader has sudo permissions, su as grader (run su - grader), enter the password, and run sudo -l; after entering in the password (again), a line like the following should appear, meaning grader has sudo permissions:
-
+```
 Matching Defaults entries for grader on
     ip-XX-XX-XX-XX.ec2.internal:
     env_reset, mail_badpass,
@@ -87,6 +88,7 @@ Matching Defaults entries for grader on
 User grader may run the following commands on
 	ip-XX-XX-XX-XX.ec2.internal:
     (ALL : ALL) ALL'
+ ```
     
 #### Allow grader to log in to the virtual machine
 
