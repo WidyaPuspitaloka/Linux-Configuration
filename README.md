@@ -106,6 +106,6 @@ User grader may run the following commands on
  
 7. On the local machine terminal (not in vagrant), run `cat ~/.ssh/insert-name-of-file.pub`
 
-8. Copy the contents of the file, and paste them in the .ssh/authorized_keys file on the virtual machine - has not succesful yet
+8. Copy the contents of the file, and paste them in the .ssh/authorized_keys file on the virtual machine (under home/grader directory) - has not succesful yet
 
 ...
