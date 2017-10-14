@@ -25,7 +25,8 @@ Note: While Amazon Lightsail provides a broswer-based connection method, this wi
 6. Copy the text from LightsailDefaultPrivateKey-eu-central-1.pem and put it in lightrail_key.rsa 
 7. Move the file to `~/.ssh/ directory`
 8. Run `chmod 600 ~/.ssh/lightrail_key.rsa`
-9. Log in with the following command: `ssh -i ~/.ssh/lightrail_key.rsa ubuntu@XX.XX.XX.XX`, where XX.XX.XX.XX is the public IP address of the instance (note that Lightsail will not allow someone to log in as root; ubuntu is the default user for Lightsail instances)
+9. Log in with the following command: `ssh -i ~/.ssh/lightrail_key.rsa ubuntu@18.194.164.182 -p 2200
+`, after @ is the public IP address of the instance (note that Lightsail will not allow someone to log in as root; ubuntu is the default user for Lightsail instances)
 
 #### Upgrade currently installed packages
 
