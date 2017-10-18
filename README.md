@@ -2,8 +2,7 @@
 
 Baseline installation of a Linux distribution on a virtual machine and prepare it to host your web applications, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database server
 
-Public IP: 18.194.164.182
-Private IP: 172.26.2.226 
+Public IP: 18.194.228.221
 
 ### Configuration Steps
 
@@ -24,13 +23,78 @@ Note: While Amazon Lightsail provides a broswer-based connection method, this wi
 2. Click on `Download default key`
 3. A file called LightsailDefaultPrivateKey-eu-central-1.pem will be downloaded; open this in a text editor
 4. Move the private key file into the folder ~/.ssh. If there is no directory, make one `mkdir .ssh` in home directory
-5. Create a file named lightrail_key 'touch ~/lightrail.key.rsa
+5. Create a file named lightrail_key 'touch ~/lightrail.key.rsa'
 6. Copy the text from LightsailDefaultPrivateKey-eu-central-1.pem and put it in lightrail_key.rsa 
-7. Move the file to `~/.ssh/ directory`
+7. Move the file to `~/.ssh/ directory` using `mv ~/lightrail.key.rsa ~/.ssh`
 8. Run `chmod 600 ~/.ssh/lightrail_key.rsa`
-9. Log in with the following command: `ssh -i ~/.ssh/lightrail_key.rsa ubuntu@18.194.164.182 -p 2200
+9. Log in with the following command: `ssh -i ~/.ssh/lightrail_key.rsa ubuntu@18.194.228.221
 `, after @ is the public IP address of the instance (note that Lightsail will not allow someone to log in as root; ubuntu is the default user for Lightsail instances)
 
+#### Create a new user named grader
+
+1. Run `sudo adduser grader`
+2. Enter in a new UNIX password (twice) when prompted
+3. Fill out information for the new grader user. ( name: grader)
+4. To switch to the grader user, run `su - grader`, and enter the password
+
+
+#### Give grader user sudo permissions
+
+1. Run `sudo visudo`
+2. Search for a line that looks like this:
+`root ALL=(ALL:ALL) ALL`
+
+3. Add the following line below this one:
+`grader ALL=(ALL:ALL) ALL`
+
+4. Save and close the visudo file
+5. To verify that grader has sudo permissions, su as grader (run `su - grader`), enter the password, and run sudo -l; after entering in the password (again), a line like the following should appear, meaning grader has sudo permissions:
+```
+Matching Defaults entries for grader on
+    ip-XX-XX-XX-XX.ec2.internal:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User grader may run the following commands on
+	ip-XX-XX-XX-XX.ec2.internal:
+    (ALL : ALL) ALL'
+ ```
+ 
+ 
+    
+#### Allow grader to log in to the virtual machine
+
+1. Run `ssh-keygen` on the local terminal machine
+2. Choose a file name for the key pair (such as grader_key)
+3. Enter in a passphrase twice (two files will be generated; the second one will end in .pub)
+4. Log in to the virtual machine (logged in into the server - ubuntu@ip)
+ - su - grader
+ - mkdir .ssh
+ - touch .ssh/authorized_keys
+ 
+ 5. On the local machine, run cat ~/.ssh/insert-name-of-file.pub
+
+6. under home/grader directory:
+ - Run `chmod 700 ~/.ssh`
+ - run `touch ~/.ssh/authorized_keys`
+ - run `chmod 600 ~/.ssh/authorized_keys`
+ 
+7. On the local machine terminal (not in vagrant), run `cat ~/.ssh/insert-name-of-file.pub`
+
+8. Copy the contents of the file, and paste them in the .ssh/authorized_keys file on the virtual machine 
+- vim .ssh/authorized_keys
+- chmod 700 .ssh
+- chmod 644 .ssh/authorized_keys
+-Make sure key-based authentication is forced (log in as grader, open the /etc/ssh/sshd_config file, and find the line that says, '# Change to no to disable tunnelled clear text passwords'; if the next line says, 'PasswordAuthentication yes', change the 'yes' to 'no' - already no
+
+9. service ssh restart
+
+10. Log in as the grader using the following command:
+
+ssh -i ~/.ssh/grader_key grader@XX.XX.XX.XX
+
+Note that a pop-up window will ask for grader's password.
+ 
 #### Upgrade currently installed packages
 
 After log in to the server from the terminal in your computer,
@@ -65,50 +129,6 @@ To                         Action      From
 
 12. Update the external (Amazon Lightsail) firewall on the browser by clicking on the 'Manage' option, then the 'Networking' tab, and then changing the firewall configuration to match the internal firewall settings above (only ports 80(TCP), 123(UDP), and 2200(TCP) should be allowed; make sure to deny the default port 22)
 
-#### Create a new user named grader
 
-1. Run `sudo adduser grader`
-2. Enter in a new UNIX password (twice) when prompted
-3. Fill out information for the new grader user. ( name: Grader)
-4. To switch to the grader user, run `su - grader`, and enter the password
-
-#### Give grader user sudo permissions
-
-1. Run `sudo visudo`
-2. Search for a line that looks like this:
-`root ALL=(ALL:ALL) ALL`
-
-3. Add the following line below this one:
-`grader ALL=(ALL:ALL) ALL`
-
-4. Save and close the visudo file
-5. To verify that grader has sudo permissions, su as grader (run `su - grader`), enter the password, and run sudo -l; after entering in the password (again), a line like the following should appear, meaning grader has sudo permissions:
-```
-Matching Defaults entries for grader on
-    ip-XX-XX-XX-XX.ec2.internal:
-    env_reset, mail_badpass,
-    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
-
-User grader may run the following commands on
-	ip-XX-XX-XX-XX.ec2.internal:
-    (ALL : ALL) ALL'
- ```
-    
-#### Allow grader to log in to the virtual machine
-
-1. Run `ssh-keygen` on the local machine (not in vagrant)
-2. Choose a file name for the key pair (such as grader_key)
-3. Enter in a passphrase twice (two files will be generated; the second one will end in .pub)
-4. Log in to the virtual machine (I logged in into the server - ubuntu@ip)
- - made grader's directory under home directory (mkdir grader), has ubuntu as another directory
-- Switch to grader's home directory, and create a new directory called .ssh (run `mkdir .ssh`)
-6. under home/grader directory:
- - Run `chmod 700 ~/.ssh`
- - run `touch ~/.ssh/authorized_keys`
- - run `chmod 600 ~/.ssh/authorized_keys`
- 
-7. On the local machine terminal (not in vagrant), run `cat ~/.ssh/insert-name-of-file.pub`
-
-8. Copy the contents of the file, and paste them in the .ssh/authorized_keys file on the virtual machine (under home/grader directory) - has not succesful yet
 
 ...
