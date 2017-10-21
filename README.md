@@ -375,6 +375,7 @@ execfile(activate_this, dict(__file__=activate_this))`
 
 4. check if there's error
 
+```
 internal service error
 [Fri Oct 20 15:15:32.393885 2017] [mpm_event:notice] [pid 29556:tid 140341715224448] AH00491: caught SIGTERM, shutting down
 [Fri Oct 20 15:15:32.453451 2017] [wsgi:warn] [pid 463:tid 140594627274624] mod_wsgi: Compiled for Python/2.7.11.
@@ -386,7 +387,7 @@ internal service error
 [Fri Oct 20 15:15:35.715855 2017] [wsgi:warn] [pid 568:tid 139785051346816] mod_wsgi: Runtime using Python/2.7.12.
 [Fri Oct 20 15:15:35.716241 2017] [mpm_event:notice] [pid 568:tid 139785051346816] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
 [Fri Oct 20 15:15:35.716253 2017] [core:notice] [pid 568:tid 139785051346816] AH00094: Command line: '/usr/sbin/apache2'
-
+```
   
 ### Update packages to the latest versions
 
