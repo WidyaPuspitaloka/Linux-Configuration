@@ -2,7 +2,7 @@
 
 Baseline installation of a Linux distribution on a virtual machine and prepare it to host your web applications, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database server
 
-Public IP: 18.194.228.221
+Public IP: 18.194.51.171
 
 ### Configuration Steps
 
@@ -91,16 +91,15 @@ make sure the text match in local machine and authorized_keys, otherwise you can
 - chmod 700 .ssh
 - chmod 644 .ssh/authorized_keys
 -Make sure key-based authentication is forced (log in as grader, open the /etc/ssh/sshd_config file, and find the line that says, '# Change to no to disable tunnelled clear text passwords'; if the next line says, 'PasswordAuthentication yes', change the 'yes' to 'no' - already no
-2 files to edit
 
 7. sudo service ssh restart
-exit grader to ubuntu user
+8. exit grader to ubuntu user
 
-8. chmod 600 ~/.ssh/grader_key in local machine
+9. chmod 600 ~/.ssh/grader_key in local machine
 
-9. Log in as the grader using the following command:
+10. Log in as the grader using the following command:
 
-ssh -i ~/.ssh/grader_key grader@18.194.51.171
+- ssh -i ~/.ssh/grader_key grader@18.194.51.171
 
 Note that a pop-up window will ask for grader's password.
  
@@ -157,7 +156,7 @@ Check to make sure it worked by using the public IP of the Amazon Lightsail inst
 Install mod_wsgi `sudo apt-get install libapache2-mod-wsgi python-dev`
 Enable mod_wsgi: `sudo a2enmod wsgi`
 
-'''
+```
 perl: warning: Setting locale failed.
 perl: warning: Please check that your locale settings:
 	LANGUAGE = (unset),
@@ -167,9 +166,10 @@ perl: warning: Please check that your locale settings:
     are supported and installed on your system.
 perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
 Module wsgi already enabled
-'''
-
- sudo locale-gen "en_US.UTF-8"
+```
+- add this:
+```
+$ sudo locale-gen "en_US.UTF-8"
 Generating locales...
   en_US.UTF-8... done
 Generation complete.
@@ -178,13 +178,16 @@ $ sudo dpkg-reconfigure locales
 Generating locales...
   en_US.UTF-8... up-to-date
 Generation complete.
-
+```
 
 - added this and work:
+```
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_TYPE=en_US.UTF-8
-
+```
+- result:
+```
 LANG=en_US.UTF-8
 LANGUAGE=en_US.UTF-8
 LC_CTYPE="en_US.UTF-8"
@@ -200,6 +203,7 @@ LC_TELEPHONE="en_US.UTF-8"
 LC_MEASUREMENT="en_US.UTF-8"
 LC_IDENTIFICATION="en_US.UTF-8"
 LC_ALL=en_US.UTF-8
+```
 
 3. Restart Apache `sudo service apache2 restart`
 
@@ -209,12 +213,12 @@ LC_ALL=en_US.UTF-8
 2. Check if no remote connections are allowed sudo vim /etc/postgresql/9.5/main/pg_hba.conf
 Make sure it looks like this (comments have been removed here for easier reading):
 
-'''
+```
 local   all             postgres                                peer
 local   all             all                                     peer
 host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
-'''
+```
 
 
 ### Make sure Python is installed
@@ -235,18 +239,15 @@ PostgreSQL creates a Linux user with the name postgres during installation; swit
 1. Login as user "postgres" `sudo su - postgres`
 2. Connect to psql (the terminal for interacting with PostgreSQL) by running `psql`
 
-Create the catalog user by running CREATE USER catalog WITH PASSWORD 'sillypassword';
+3. Create the catalog user by running CREATE USER catalog WITH PASSWORD 'sillypassword';
 
-Next, give the catalog user the ability to create databases: ALTER USER catalog CREATEDB;
+4. Next, give the catalog user the ability to create databases: ALTER USER catalog CREATEDB;
 
-Create the 'catalog' database owned by catalog user: # CREATE DATABASE catalog WITH OWNER catalog;.
+5. Create the 'catalog' database owned by catalog user: # CREATE DATABASE catalog WITH OWNER catalog;.
 
-Connect to the database: # \c catalog
+6. Connect to the database: # \c catalog
 
-
-not Finally, give the catalog user a password by running \password catalog
-
-Check to make sure the catalog user was created by running \du; a table of sorts will be returned, and it should look like this:
+7. Check to make sure the catalog user was created by running \du; a table of sorts will be returned, and it should look like this:
 
 ```
 				   List of roles
@@ -256,9 +257,9 @@ Check to make sure the catalog user was created by running \du; a table of sorts
  postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
 ```
 
-Exit psql by running \q
+8. Exit psql by running \q
 
-Switch back to the ubuntu user by running `exit`
+9. Switch back to the ubuntu user by running `exit`
 
 ### Install git and clone the catalog project
 
@@ -269,21 +270,19 @@ Switch back to the ubuntu user by running `exit`
 4. Move inside this directory using cd CatalogApp
 Clone the Catalog App to the virtual machine `sudo git clone https://github.com/WidyaPuspitaloka/Catalog.git CatalogApp`
 
-nott 5. rename the project name : sudo mv ./Catalog ./CatalogApp
-
 6. Move to the inner CatalogApp directory using `cd CatalogApp`
 7. rename application.py to __init__.py using `sudo mv finalproject.py __init__.py`
 8. Edit database_setup.py, __init__.py and change engine = create_engine('sqlite:///toyshop.db') to engine = create_engine('postgresql://catalog:sillypassword@localhost/catalog')
 
 
 ### Set up a vitual environment and install dependencies
- Install Flask
+- Install Flask
  
-Setting up a virtual environment will keep the application and its dependencies isolated from the main system. Changes to it will not affect the cloud server's system configurations.
+- Setting up a virtual environment will keep the application and its dependencies isolated from the main system. Changes to it will not affect the cloud server's system configurations.
 
-In this step, we will create a virtual environment for our flask application.
+- In this step, we will create a virtual environment for our flask application.
 
-We will use pip to install virtualenv and Flask. If pip is not installed, install it on Ubuntu through apt-get.
+- We will use pip to install virtualenv and Flask. If pip is not installed, install it on Ubuntu through apt-get.
 
 1. Start by installing pip (if it isn't installed already) with the following command:
 
@@ -292,25 +291,26 @@ We will use pip to install virtualenv and Flask. If pip is not installed, instal
 2. Install virtualenv with apt-get by running `sudo apt-get install python-virtualenv`
 
 3. Change to the /var/www/catalogApp/ directory; choose a name for a temporary environment ('venv' is used in this example), and create this environment by running virtualenv venv (make sure to not use sudo here as it can cause problems later on)
-
 -sudo virtualenv venv
+
 4. Activate the virtual environment: $ source venv/bin/activate.
 5. Change permissions to the virtual environment folder: $ sudo chmod -R 777 venv.
 6. Install Flask: $ pip install Flask
-7. pip install httplib2
-pip install --upgrade oauth2client
-pip install sqlalchemy
-pip install psycopg2
+7. 
+- pip install httplib2
+- pip install --upgrade oauth2client
+- pip install sqlalchemy
+- pip install psycopg2
 
-In order to make sure everything was installed correctly, run python __init__.py; the following (among other things) should be returned:
+8. In order to make sure everything was installed correctly, run python __init__.py; the following (among other things) should be returned:
 
 * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 
 ### Configure and enable a new virtual host
 
-in var/www/CatalogApp/
-6. Create a virtual host conifg file: $ sudo nano /etc/apache2/sites-available/CatalogApp.conf.
-7. Paste in the following lines of code:
+- in var/www/CatalogApp/
+1. Create a virtual host conifg file: $ sudo nano /etc/apache2/sites-available/CatalogApp.conf.
+2. Paste in the following lines of code:
 
 ```
 <VirtualHost *:80>
@@ -333,25 +333,23 @@ in var/www/CatalogApp/
         CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
-
-add this after th error:
-$ite-packages
-        WSGIProcessGroup CatalogApp
 	
-8. run sudo a2ensite CatalogApp and get this message 
+3. run sudo a2ensite CatalogApp and get this message 
+```
 Enabling site CatalogApp.
 To activate the new configuration, you need to run:
   service apache2 reload
-  
-  
--sudo service apache2 reload
+ ```
+ 
+4. sudo service apache2 reload
 
-9. Write a .wsgi file
+### Write a .wsgi file
 
-Apache serves Flask applications by using a .wsgi file; create a file called catalogapp.wsgi in /var/www/CatalogApp
+1. Apache serves Flask applications by using a .wsgi file; create a file called catalogapp.wsgi in /var/www/CatalogApp
 
-Add the following to the file:
+2. Add the following to the file:
 
+```
 #!/usr/bin/python
 import sys
 import logging
@@ -361,18 +359,21 @@ sys.path.insert(0,"/var/www/CatalogApp/")
 from CatalogApp import app as application
 application.secret_key = 'super_secret_key"
 
-addd this after the error: reload(sys)
-sys.setdefaultencoding(‘utf-8’)
+```
+
+- add this after the error: 
+`reload(sys)`
+`sys.setdefaultencoding(‘utf-8’)`
 
 
-and this
-activate_this = '/var/www/CatalogApp/CatalogApp/venv/bin/activate_this.py'
-execfile(activate_this, dict(__file__=activate_this))
+- and this
+`activate_this = '/var/www/CatalogApp/CatalogApp/venv/bin/activate_this.py'
+execfile(activate_this, dict(__file__=activate_this))`
 
 
-10. sudo service apache2 restart
+3. sudo service apache2 restart
 
-check if there's error
+4. check if there's error
 
 internal service error
 [Fri Oct 20 15:15:32.393885 2017] [mpm_event:notice] [pid 29556:tid 140341715224448] AH00491: caught SIGTERM, shutting down
