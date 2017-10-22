@@ -1,3 +1,4 @@
+
 # Linux Server Configuration
 
 Baseline installation of a Linux distribution on a virtual machine and prepare it to host your web applications, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database server
@@ -90,7 +91,6 @@ make sure the text match in local machine and authorized_keys, otherwise you can
 - :wq
 - chmod 700 .ssh
 - chmod 644 .ssh/authorized_keys
--Make sure key-based authentication is forced (log in as grader, open the /etc/ssh/sshd_config file, and find the line that says, '# Change to no to disable tunnelled clear text passwords'; if the next line says, 'PasswordAuthentication yes', change the 'yes' to 'no' - already no
 
 7. sudo service ssh restart
 8. exit grader to ubuntu user
@@ -102,6 +102,24 @@ make sure the text match in local machine and authorized_keys, otherwise you can
 - ssh -i ~/.ssh/grader_key grader@18.194.51.171
 
 Note that a pop-up window will ask for grader's password.
+
+### Configure SSH Daemon
+Now that we have our new account, we can secure our server a little bit by modifying its SSH daemon configuration (the program that allows us to log in remotely) to disallow remote SSH access to the root account.
+
+Begin by opening the configuration file with your text editor as root:
+
+1. sudo nano /etc/ssh/sshd_config
+Next, we need to find the line that looks like this:
+
+/etc/ssh/sshd_config (before)
+`PermitRootLogin yes`
+Here, we have the option to disable root login through SSH. This is generally a more secure setting since we can now access our server through our normal user account and escalate privileges when necessary.
+
+2. Modify this line to "no" like this to disable root login:
+
+/etc/ssh/sshd_config (after)
+`PermitRootLogin no`
+
  
 #### Upgrade currently installed packages
 
@@ -313,12 +331,13 @@ Clone the Catalog App to the virtual machine `sudo git clone https://github.com/
 
 ```
 <VirtualHost *:80>
-        ServerName 18.194.51.171
+        ServerName mywebsite.com
         ServerAdmin widyapuspitaloka11@yahoo.com
-	WSGIDaemonProcess CatalogApp python-path=/var/www/CatalogApp:/var/www/CatalogApp/venv/lib/python2.7/site-packages
-        WSGIProcessGroup CatalogApp
+        WSGIDaemonProcess CatalogApp user=www-data group=www-data threads=5
         WSGIScriptAlias / /var/www/CatalogApp/catalogapp.wsgi
         <Directory /var/www/CatalogApp/CatalogApp/>
+                WSGIProcessGroup CatalogApp
+                WSGIApplicationGroup %{GLOBAL}
                 Order allow,deny
                 Allow from all
         </Directory>
@@ -348,9 +367,11 @@ To activate the new configuration, you need to run:
 
 2. The following prompt will be returned:
 
+```
 Site 000-default disabled.
 To activate the new configuration, you need to run:
   service apache2 reload
+```
 
 3. Run sudo service apache2 reload
 
@@ -362,6 +383,7 @@ To activate the new configuration, you need to run:
 
 ```
 #!/usr/bin/python
+import os
 import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
@@ -371,14 +393,14 @@ activate_this = '/var/www/CatalogApp/CatalogApp/venv/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
 from CatalogApp import app as application
-application.secret_key = 'super_secret_key"
+application.secret_key = 'super_secret_key'
 
 ```
 3. sudo service apache2 restart
 
 4. check if there's error using `sudo tail /var/log/apache2/error.log`
 
-5. add the paths in client secrets section in __init__.py:
+5. add the paths in client secrets section in `__init__.py`:
 /var/www/CatalogApp/CatalogApp/
   
 ### Add client_secrets.json files
@@ -391,7 +413,7 @@ application.secret_key = 'super_secret_key"
 
 4. Add the client ID to templates/login.html file in the project directory
 
-5. Add the complete file path for the client_secrets.json file in the __init__.py file; change it from 'client_secrets.json' to '/var/www/CatalogApp/CatalogApp/client_secrets.json'
+5. Add the complete file path for the client_secrets.json file in the `__init__.py` file; change it from `client_secrets.json` to `/var/www/CatalogApp/CatalogApp/client_secrets.json`
 
 ### Update packages to the latest versions
 
