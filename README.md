@@ -416,11 +416,11 @@ application.secret_key = 'super_secret_key'
 3. Sudo apt-get update && sudo apt-get upgrade
 
 ### Resources
-1. How To Deploy a Flask Application on an Ubuntu VPS[https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps]
-2. How To Serve Flask Applications with uWSGI and Nginx on Ubuntu 16.04[https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-16-04]
-3. Initial Server Setup with Ubuntu 14.04[https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04]
-4. Starting web projects using Flask, virtualenv, pip[https://www.enigmeta.com/blog/starting-flask/]
-6. Connecting to Your Linux Instance Using SSH [http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html]
+1. [How To Deploy a Flask Application on an Ubuntu VPS](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps)
+2. [How To Serve Flask Applications with uWSGI and Nginx on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-16-04)
+3. [Initial Server Setup with Ubuntu 14.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04)
+4. [Starting web projects using Flask, virtualenv, pip](https://www.enigmeta.com/blog/starting-flask/)
+6. [Connecting to Your Linux Instance Using SSH] (http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html)
 7. 1-1 Appointment with Udacity's Mentor
 
 ### License
