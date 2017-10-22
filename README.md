@@ -302,7 +302,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 7. Rename application.py to init.py using `sudo mv finalproject.py __init__.py`
 
-8. Edit database_setup.py, init.py and change engine = create_engine('sqlite:///toyshop.db') to engine = create_engine('postgresql://catalog:sillypassword@localhost/catalog')
+8. Edit 
+- database_setup.py
+- init.py 
+- coldplaydiscography.py
+
+and change engine = create_engine('sqlite:///toyshop.db') to engine = create_engine('postgresql://catalog:sillypassword@localhost/catalog')
 
 ## Set up a vitual environment and install dependencies
 
@@ -342,6 +347,8 @@ pip install requests
 ```
 Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
+
+8. Create database schema python database_setup.py
 
 ## Configure and enable a new virtual host
 
