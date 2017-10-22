@@ -63,8 +63,6 @@ User grader may run the following commands on
     (ALL : ALL) ALL'
  ```
  
- 
-    
 #### Allow grader to log in to the virtual machine
 
 1. Run `ssh-keygen` on the local terminal machine
@@ -99,7 +97,7 @@ make sure the text match in local machine and authorized_keys, otherwise you can
 
 10. Log in as the grader using the following command:
 
-- ssh -i ~/.ssh/grader_key grader@18.194.51.171
+- `ssh -i ~/.ssh/grader_key grader@18.194.51.171`
 
 Note that a pop-up window will ask for grader's password.
 
@@ -134,16 +132,14 @@ After log in to the server (ubuntu@ip) from the terminal in your computer,
 1. Start by changing the SSH port from 22 to 2200 (open up the `sudo vim/etc/ssh/sshd_config file`, change the port number on line 5 to 2200, then restart SSH by running sudo service ssh restart)
 
 ### Configure the Uncomplicated Firewall (UFW)
-2. Check to see if the ufw (the preinstalled ubuntu firewall) is active by running sudo ufw status - it is inactive at this point
+1. Check to see if the ufw (the preinstalled ubuntu firewall) is active by running sudo ufw status - it is inactive at this point
 
-6. Run sudo ufw allow 2200/tcp to allow all tcp connections for port 2200 so that SSH will work
-7. Run sudo ufw allow 80/tcp to set the ufw firewall to allow a basic HTTP server
-8. Run sudo ufw allow 123/udp to set the ufw firewall to allow NTP
+2. Run sudo ufw allow 2200/tcp to allow all tcp connections for port 2200 so that SSH will work
+3. Run sudo ufw allow 80/tcp to set the ufw firewall to allow a basic HTTP server
+4. Run sudo ufw allow 123/udp to set the ufw firewall to allow NTP
 
-not 9. Run sudo ufw deny 22 to deny port 22 (deny this port since it is not being used for anything; it is the default port for SSH, but this virtual machine has now been configured so that SSH uses port 2200)
-
-10. Run `sudo ufw enable` to enable the ufw firewall
-11. Run sudo ufw status to check which ports are open and to see if the ufw is active; if done correctly, it should look like this:
+5. Run `sudo ufw enable` to enable the ufw firewall
+6. Run sudo ufw status to check which ports are open and to see if the ufw is active; if done correctly, it should look like this:
 ```
 To                         Action      From
 --                         ------      ----
@@ -157,7 +153,7 @@ To                         Action      From
 123/udp (v6)               ALLOW       Anywhere (v6)
 ```
 
-12. Update the external (Amazon Lightsail) firewall on the browser by clicking on the 'Manage' option, then the 'Networking' tab, and then changing the firewall configuration to match the internal firewall settings above (only ports 80(TCP), 123(UDP), and 2200(TCP) should be allowed; make sure to deny the default port 22)
+7. Update the external (Amazon Lightsail) firewall on the browser by clicking on the 'Manage' option, then the 'Networking' tab, and then changing the firewall configuration to match the internal firewall settings above (only ports 80(TCP), 123(UDP), and 2200(TCP) should be allowed; make sure to deny the default port 22)
 
 
 ### Configure the local timezone to UTC
