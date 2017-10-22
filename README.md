@@ -1,9 +1,11 @@
 
 # Linux Server Configuration
 
-Baseline installation of a Linux distribution on a virtual machine and prepare it to host your web applications, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database server
+Baseline installation of a Linux distribution on a virtual machine and prepare it to host web applications, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database server
 
 Public IP: 18.194.51.171
+SSH port: 2200
+URL: http://18.194.51.171/
 
 ### Configuration Steps
 
@@ -77,11 +79,7 @@ User grader may run the following commands on
  
  5. On the local machine, run cat ~/.ssh/grader_key.pub:
 
-``` 
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDnr0UCBQt/WxjetsK4LS0BwrbhyD2JyfeYXxA7donJK9MnH+HtQFyCbd6/Zm+9tWDgRwQizOnh6OejSJt/PbYo/aS9h/5pTslHXY8dot2WeQptgngKaGqOKgDXHa4EUwiMg2cCE4+PtO55U37zRrneRlONsr2IffeB09RqLmVQoeHCk+SjrVBdvC28iThxjwSo3GKJndYQ8yv+keKXR5FEFi/hc7oKaL2wu0IoTORSfNurBVJvM8v9ZvhwPRTYk5g+zpsKu4ig9W0JlMFcXm89vjgZbNSMoj7o3Oo866jqBbQ2WjGbwgICCu5ljgL9nB+zt7bqmAXRnCA+Ei9yNbKL widyapuspitaloka@Widyas-MacBook-Air.local
-```
-
-make sure the text match in local machine and authorized_keys, otherwise you can not log in as grader.
+- make sure the text match in local machine and authorized_keys, otherwise you can not log in as grader.
 
 6. Copy the contents of the file, and paste them in the .ssh/authorized_keys file on the virtual machine 
 - vim .ssh/authorized_keys
@@ -97,7 +95,7 @@ make sure the text match in local machine and authorized_keys, otherwise you can
 
 10. Log in as the grader using the following command:
 
-- `ssh -i ~/.ssh/grader_key grader@18.194.51.171`
+`ssh -i ~/.ssh/grader_key grader@18.194.51.171`
 
 Note that a pop-up window will ask for grader's password.
 
@@ -303,7 +301,7 @@ Clone the Catalog App to the virtual machine `sudo git clone https://github.com/
 
 2. Install virtualenv with apt-get by running `sudo apt-get install python-virtualenv`
 
-3. Change to the /var/www/catalogApp/catalogApp directory; choose a name for a temporary environment ('venv' is used in this example), and create this environment by running virtualenv venv (make sure to not use sudo here as it can cause problems later on)
+3. Change to the /var/www/CatalogApp/CatalogApp directory; choose a name for a temporary environment ('venv' is used in this example), and create this environment by running virtualenv venv (make sure to not use sudo here as it can cause problems later on)
 - `sudo virtualenv venv`
 
 4. Activate the virtual environment: $ source venv/bin/activate.
@@ -348,7 +346,7 @@ Clone the Catalog App to the virtual machine `sudo git clone https://github.com/
 </VirtualHost>
 ```
 	
-3. run sudo a2ensite CatalogApp and get this message 
+3. Run sudo a2ensite CatalogApp and get this message 
 ```
 Enabling site CatalogApp.
 To activate the new configuration, you need to run:
@@ -392,12 +390,10 @@ from CatalogApp import app as application
 application.secret_key = 'super_secret_key'
 
 ```
-3. sudo service apache2 restart
+3. Sudo service apache2 restart
 
-4. check if there's error using `sudo tail /var/log/apache2/error.log`
+4. Check if there's error using `sudo tail /var/log/apache2/error.log`
 
-5. add the paths in client secrets section in `__init__.py`:
-/var/www/CatalogApp/CatalogApp/
   
 ### Add client_secrets.json files
 
@@ -413,18 +409,19 @@ application.secret_key = 'super_secret_key'
 
 ### Update packages to the latest versions
 
-1. sudo apt install unattended-upgrades
+1. Sudo apt install unattended-upgrades
 
-2. sudo apt autoremove
+2. Sudo apt autoremove
 
-3. sudo apt-get update && sudo apt-get upgrade
+3. Sudo apt-get update && sudo apt-get upgrade
 
 ### Resources
-- https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
-- https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-16-04
-- https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04
-- https://www.enigmeta.com/blog/starting-flask/
-- https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps#step-four-%E2%80%93-configure-and-enable-a-new-virtual-host
+1. How To Deploy a Flask Application on an Ubuntu VPS[https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps]
+2. How To Serve Flask Applications with uWSGI and Nginx on Ubuntu 16.04[https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-16-04]
+3. Initial Server Setup with Ubuntu 14.04[https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04]
+4. Starting web projects using Flask, virtualenv, pip[https://www.enigmeta.com/blog/starting-flask/]
+6. Connecting to Your Linux Instance Using SSH [http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html]
+7. 1-1 Appointment with Udacity's Mentor
 
 ### License
 MIT License
