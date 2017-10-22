@@ -2,7 +2,9 @@
 
 Baseline installation of a Linux distribution on a virtual machine and prepare it to host web applications, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database server
 
-Public IP: 18.194.51.171 SSH port: 2200 URL: http://18.194.51.171/
+- Public IP: 18.194.51.171 
+- SSH port: 2200 
+- URL: http://18.194.51.171/
 
 # Configuration Steps
 
