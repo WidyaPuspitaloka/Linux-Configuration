@@ -106,6 +106,8 @@ sudo service ssh restart
 
 Note that a pop-up window will ask for grader's password.
 
+9. generate private key by: `cat ~/.ssh/grader_key` to give to the reviewer
+
 ## Configure SSH Daemon
 
 Now that we have our new account, we can secure our server a little bit by modifying its SSH daemon configuration (the program that allows us to log in remotely) to disallow remote SSH access to the root account.
