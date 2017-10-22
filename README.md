@@ -290,19 +290,20 @@ Clone the Catalog App to the virtual machine `sudo git clone https://github.com/
 
 2. Install virtualenv with apt-get by running `sudo apt-get install python-virtualenv`
 
-3. Change to the /var/www/catalogApp/ directory; choose a name for a temporary environment ('venv' is used in this example), and create this environment by running virtualenv venv (make sure to not use sudo here as it can cause problems later on)
--sudo virtualenv venv
+3. Change to the /var/www/catalogApp/catalogApp directory; choose a name for a temporary environment ('venv' is used in this example), and create this environment by running virtualenv venv (make sure to not use sudo here as it can cause problems later on)
+- `sudo virtualenv venv`
 
 4. Activate the virtual environment: $ source venv/bin/activate.
 5. Change permissions to the virtual environment folder: $ sudo chmod -R 777 venv.
 6. Install Flask: $ pip install Flask
 7. 
-- pip install httplib2
-- pip install --upgrade oauth2client
-- pip install sqlalchemy
-- pip install psycopg2
+- `pip install httplib2`
+- `pip install --upgrade oauth2client`
+- `pip install sqlalchemy`
+- `pip install psycopg2`
+- `pip install requests`
 
-8. In order to make sure everything was installed correctly, run python __init__.py; the following (among other things) should be returned:
+8. In order to make sure everything was installed correctly, run `python __init__.py`; the following (among other things) should be returned:
 
 * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 
@@ -388,6 +389,9 @@ internal service error
 [Fri Oct 20 15:15:35.716241 2017] [mpm_event:notice] [pid 568:tid 139785051346816] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
 [Fri Oct 20 15:15:35.716253 2017] [core:notice] [pid 568:tid 139785051346816] AH00094: Command line: '/usr/sbin/apache2'
 ```
+
+5. add the paths in client secrets section in __init__.py:
+/var/www/CatalogApp/CatalogApp/
   
 ### Update packages to the latest versions
 
