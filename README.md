@@ -167,7 +167,7 @@ perl: warning: Please check that your locale settings:
 perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
 Module wsgi already enabled
 ```
-- add this:
+- run this:
 ```
 $ sudo locale-gen "en_US.UTF-8"
 Generating locales...
@@ -180,7 +180,7 @@ Generating locales...
 Generation complete.
 ```
 
-- added this and work:
+- run this:
 ```
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -219,7 +219,6 @@ local   all             all                                     peer
 host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
 ```
-
 
 ### Make sure Python is installed
 
@@ -309,7 +308,6 @@ Clone the Catalog App to the virtual machine `sudo git clone https://github.com/
 
 ### Configure and enable a new virtual host
 
-- in var/www/CatalogApp/
 1. Create a virtual host conifg file: $ sudo nano /etc/apache2/sites-available/CatalogApp.conf.
 2. Paste in the following lines of code:
 
@@ -344,6 +342,18 @@ To activate the new configuration, you need to run:
  
 4. sudo service apache2 reload
 
+### Disable the default Apache site
+
+1. At some point during the configuration, the default Apache site will likely need to be disabled; to do this, run sudo a2dissite 000-default.conf
+
+2. The following prompt will be returned:
+
+Site 000-default disabled.
+To activate the new configuration, you need to run:
+  service apache2 reload
+
+3. Run sudo service apache2 reload
+
 ### Write a .wsgi file
 
 1. Apache serves Flask applications by using a .wsgi file; create a file called catalogapp.wsgi in /var/www/CatalogApp
@@ -357,42 +367,32 @@ import logging
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0,"/var/www/CatalogApp/")
 
+activate_this = '/var/www/CatalogApp/CatalogApp/venv/bin/activate_this.py'
+execfile(activate_this, dict(__file__=activate_this))
+
 from CatalogApp import app as application
 application.secret_key = 'super_secret_key"
 
 ```
-
-- add this after the error: 
-`reload(sys)`
-`sys.setdefaultencoding(‘utf-8’)`
-
-
-- and this
-`activate_this = '/var/www/CatalogApp/CatalogApp/venv/bin/activate_this.py'
-execfile(activate_this, dict(__file__=activate_this))`
-
-
 3. sudo service apache2 restart
 
-4. check if there's error
-
-```
-internal service error
-[Fri Oct 20 15:15:32.393885 2017] [mpm_event:notice] [pid 29556:tid 140341715224448] AH00491: caught SIGTERM, shutting down
-[Fri Oct 20 15:15:32.453451 2017] [wsgi:warn] [pid 463:tid 140594627274624] mod_wsgi: Compiled for Python/2.7.11.
-[Fri Oct 20 15:15:32.453481 2017] [wsgi:warn] [pid 463:tid 140594627274624] mod_wsgi: Runtime using Python/2.7.12.
-[Fri Oct 20 15:15:32.453841 2017] [mpm_event:notice] [pid 463:tid 140594627274624] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
-[Fri Oct 20 15:15:32.453856 2017] [core:notice] [pid 463:tid 140594627274624] AH00094: Command line: '/usr/sbin/apache2'
-[Fri Oct 20 15:15:35.656170 2017] [mpm_event:notice] [pid 463:tid 140594627274624] AH00491: caught SIGTERM, shutting down
-[Fri Oct 20 15:15:35.715816 2017] [wsgi:warn] [pid 568:tid 139785051346816] mod_wsgi: Compiled for Python/2.7.11.
-[Fri Oct 20 15:15:35.715855 2017] [wsgi:warn] [pid 568:tid 139785051346816] mod_wsgi: Runtime using Python/2.7.12.
-[Fri Oct 20 15:15:35.716241 2017] [mpm_event:notice] [pid 568:tid 139785051346816] AH00489: Apache/2.4.18 (Ubuntu) mod_wsgi/4.3.0 Python/2.7.12 configured -- resuming normal operations
-[Fri Oct 20 15:15:35.716253 2017] [core:notice] [pid 568:tid 139785051346816] AH00094: Command line: '/usr/sbin/apache2'
-```
+4. check if there's error using `sudo tail /var/log/apache2/error.log`
 
 5. add the paths in client secrets section in __init__.py:
 /var/www/CatalogApp/CatalogApp/
   
+### Add client_secrets.json files
+
+1. On the Google API Console: make sure to add http://XX.XX.XX.XX and http://ec2-XX-XX-XX-XX.compute-1.amazonaws.com as authorized JavaScript origins
+
+2. Add http://ec2-XX-XX-XX-XX.compute-1.amazonaws.com/login, http://ec2-XX-XX-XX-XX.compute-1.amazonaws.com/gconnect, and http://ec2-XX-XX-XX-XX.compute-1.amazonaws.com/oauth2callback as authorized redirect URIs
+
+3. Google will provide a client ID and client secret for the project; download the JSON file, and copy and paste the contents into the client_secrets.json file
+
+4. Add the client ID to templates/login.html file in the project directory
+
+5. Add the complete file path for the client_secrets.json file in the __init__.py file; change it from 'client_secrets.json' to '/var/www/CatalogApp/CatalogApp/client_secrets.json'
+
 ### Update packages to the latest versions
 
 1. sudo apt install unattended-upgrades
