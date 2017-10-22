@@ -1,0 +1,51 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<html>
+    <body>
+        <div class="row">
+            <div class="col-md-12">
+                <br>
+                <h1> Coldplay Discography </h1>
+                <hr>
+            </div>
+        </div>
+<!--MESSAGE FLASH -->
+        <div class = 'flash'>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li><strong>{{message}}</strong></li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        </div>
+
+        <div class="row padding-top padding-bottom">
+            <div class="col-md-12">
+                <a href="{{url_for('newAlbum')}}">
+                    <button class="btn btn-default " id="new-album">
+                        <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
+                        Create New Album
+                    </button>
+                </a>
+            </div>
+            <div class="col-md-1"></div>
+        <div>
+        {% for album in albums %}
+            <a href = "{{url_for('showSong', album_id = album.id)}}">
+                <div class="row text-left">
+                        <div class="col-md-1"></div>
+                            <div class="col-md-12 album-list">
+                                <h3>{{album.name}}</h3>
+                            </div>
+                </div>
+            </a>
+        {% endfor %}
+{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+{% extends "main.html" %}
+{% block content %}
+
+<html>
+    <header>
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <br>
+            <a href="{{url_for('showLogin')}}">Click Here to Log in </a>
+            </div>
+        </div>
+
+    </header>
+    <body>
+        <div class="row">
+            <div class="col-md-12">
+                <h1> Coldplay Discography </h1>
+                <hr>
+            </div>
+        </div>
+        <div class = 'flash'>
+<!--MESSAGE FLASH -->
+        {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li><strong>{{message}}</strong></li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+        </div>
+
+<!-- Main Image -->
+    <main id ="main-image">
+        <div class="row">
+          <div class="col-md-12">
+            <figure>
+              <img class="main-img img-responsive" src="https://images2.alphacoders.com/584/584870.jpg" alt="main image">
+            </figure>
+          </div>
+        </div>
+    </main>
+
+<!-- Album Section -->
+    <div class="row">
+        <div class="col-md-12">
+        {% for album in albums %}
+        <a href = "{{url_for('showSong', album_id = album.id)}}">
+            <div class="row">
+                <div class="col-md-12 album-list">
+                    <h3>{{album.name}}</h3>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+{% endblock %}
+
+    </body>
+
+</html>
