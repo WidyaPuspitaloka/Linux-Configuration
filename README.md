@@ -7,7 +7,7 @@ Public IP: 18.194.51.171
 
 ### Configuration Steps
 
-#### Create an instance with Amazon Lightsail
+### Create an instance with Amazon Lightsail
 
 1. Sign in to Amazon Lightsail using an Amazon Web Services account
 2. Follow the `Create an instance` link
@@ -16,7 +16,7 @@ Public IP: 18.194.51.171
 5. Name the instance (wap-lightsail) and click 'Create'
 6. Wait for the instance to start up
 
-#### Connect to the instance on a local machine
+### Connect to the instance on a local machine
 
 Note: While Amazon Lightsail provides a broswer-based connection method, this will no longer work once the SSH port is changed (see below). The following steps outline how to connect to the instance via the Terminal program on Mac OS machines.
 
@@ -31,7 +31,7 @@ Note: While Amazon Lightsail provides a broswer-based connection method, this wi
 9. Log in with the following command: `ssh -i ~/.ssh/lightrail_key.rsa ubuntu@18.194.228.221`
 `, after @ is the public IP address of the instance (note that Lightsail will not allow someone to log in as root; ubuntu is the default user for Lightsail instances)`
 
-#### Create a new user named grader
+### Create a new user named grader
 
 in server ubuntu directory
 1. Run `sudo adduser grader`
@@ -40,7 +40,7 @@ in server ubuntu directory
 4. To switch to the grader user, run `su - grader`, and enter the password
 
 
-#### Give grader user sudo permissions
+### Give grader user sudo permissions
 in ubuntu directory
 
 1. Run `sudo visudo`
@@ -63,7 +63,7 @@ User grader may run the following commands on
     (ALL : ALL) ALL'
  ```
  
-#### Allow grader to log in to the virtual machine
+### Allow grader to log in to the virtual machine
 
 1. Run `ssh-keygen` on the local terminal machine
 2. Choose a file name for the key pair (such as grader_key)
@@ -101,7 +101,7 @@ make sure the text match in local machine and authorized_keys, otherwise you can
 
 Note that a pop-up window will ask for grader's password.
 
-#### Configure SSH Daemon
+### Configure SSH Daemon
 Now that we have our new account, we can secure our server a little bit by modifying its SSH daemon configuration (the program that allows us to log in remotely) to disallow remote SSH access to the root account.
 
 Begin by opening the configuration file with your text editor as root:
@@ -119,19 +119,19 @@ Here, we have the option to disable root login through SSH. This is generally a 
 `PermitRootLogin no`
 
  
-#### Upgrade currently installed packages
+### Upgrade currently installed packages
 
 After log in to the server (ubuntu@ip) from the terminal in your computer,
 1. Notify the system of what package updates are available by running `sudo apt-get update`
 2. Download available package updates by running `sudo apt-get upgrade`
 - install package maintainer 
 
-#### Change the SSH port from 22 to 2200
+### Change the SSH port from 22 to 2200
 
 After log in to the server (ubuntu@ip) from the terminal in your computer,
 1. Start by changing the SSH port from 22 to 2200 (open up the `sudo vim/etc/ssh/sshd_config file`, change the port number on line 5 to 2200, then restart SSH by running sudo service ssh restart)
 
-#### Configure the Uncomplicated Firewall (UFW)
+### Configure the Uncomplicated Firewall (UFW)
 1. Check to see if the ufw (the preinstalled ubuntu firewall) is active by running sudo ufw status - it is inactive at this point
 
 2. Run sudo ufw allow 2200/tcp to allow all tcp connections for port 2200 so that SSH will work
@@ -156,12 +156,12 @@ To                         Action      From
 7. Update the external (Amazon Lightsail) firewall on the browser by clicking on the 'Manage' option, then the 'Networking' tab, and then changing the firewall configuration to match the internal firewall settings above (only ports 80(TCP), 123(UDP), and 2200(TCP) should be allowed; make sure to deny the default port 22)
 
 
-#### Configure the local timezone to UTC
+### Configure the local timezone to UTC
 
 1. Configure the time zone `sudo dpkg-reconfigure tzdata`
 2. It is already set to UTC.
 
-#### Install and configure Apache to serve a Python mod_wsgi application
+### Install and configure Apache to serve a Python mod_wsgi application
 
 1. Install Apache `sudo apt-get install apache2`
 Check to make sure it worked by using the public IP of the Amazon Lightsail instance as as a URL in a browser; if Apache is working correctly, a page with the title 'Apache2 Ubuntu Default Page' should load
@@ -221,7 +221,7 @@ LC_ALL=en_US.UTF-8
 
 3. Restart Apache `sudo service apache2 restart`
 
-#### Install and configure PostgreSQL
+### Install and configure PostgreSQL
 1. Install PostgreSQL `sudo apt-get install postgresql`
 
 2. Check if no remote connections are allowed sudo vim /etc/postgresql/9.5/main/pg_hba.conf
@@ -234,7 +234,7 @@ host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
 ```
 
-#### Make sure Python is installed
+### Make sure Python is installed
 
 Python should already be installed on a machine running Ubuntu 16.04. To verify, simply run `python`. Something like the following should appear:
 
@@ -245,7 +245,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> 
 ```
 
-#### Create a new PostgreSQL user named catalog with limited permissions
+### Create a new PostgreSQL user named catalog with limited permissions
 
 PostgreSQL creates a Linux user with the name postgres during installation; switch to this user by running sudo su - postgres (for security reasons, it is important to only use the postgres user for accessing the PostgreSQL software)
 
@@ -274,7 +274,7 @@ PostgreSQL creates a Linux user with the name postgres during installation; swit
 
 9. Switch back to the ubuntu user by running `exit`
 
-#### Install git and clone the catalog project
+### Install git and clone the catalog project
 
 1. Run `sudo apt-get install git`
 
@@ -320,7 +320,7 @@ Clone the Catalog App to the virtual machine `sudo git clone https://github.com/
 
 * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 
-#### Configure and enable a new virtual host
+### Configure and enable a new virtual host
 
 1. Create a virtual host conifg file: $ sudo nano /etc/apache2/sites-available/CatalogApp.conf.
 2. Paste in the following lines of code:
@@ -357,7 +357,7 @@ To activate the new configuration, you need to run:
  
 4. sudo service apache2 reload
 
-#### Disable the default Apache site
+### Disable the default Apache site
 
 1. At some point during the configuration, the default Apache site will likely need to be disabled; to do this, run sudo a2dissite 000-default.conf
 
@@ -371,7 +371,7 @@ To activate the new configuration, you need to run:
 
 3. Run sudo service apache2 reload
 
-#### Write a .wsgi file
+### Write a .wsgi file
 
 1. Apache serves Flask applications by using a .wsgi file; create a file called catalogapp.wsgi in /var/www/CatalogApp
 
@@ -399,7 +399,7 @@ application.secret_key = 'super_secret_key'
 5. add the paths in client secrets section in `__init__.py`:
 /var/www/CatalogApp/CatalogApp/
   
-#### Add client_secrets.json files
+### Add client_secrets.json files
 
 1. On the Google API Console: make sure to add http://XX.XX.XX.XX and http://ec2-XX-XX-XX-XX.compute-1.amazonaws.com as authorized JavaScript origins
 
@@ -411,7 +411,7 @@ application.secret_key = 'super_secret_key'
 
 5. Add the complete file path for the client_secrets.json file in the `__init__.py` file; change it from `client_secrets.json` to `/var/www/CatalogApp/CatalogApp/client_secrets.json`
 
-#### Update packages to the latest versions
+### Update packages to the latest versions
 
 1. sudo apt install unattended-upgrades
 
@@ -419,12 +419,12 @@ application.secret_key = 'super_secret_key'
 
 3. sudo apt-get update && sudo apt-get upgrade
 
-#### Resources
+### Resources
 - https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
 - https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-16-04
 - https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04
 - https://www.enigmeta.com/blog/starting-flask/
 - https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps#step-four-%E2%80%93-configure-and-enable-a-new-virtual-host
 
-#### License
+### License
 MIT License
